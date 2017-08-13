@@ -1,0 +1,4 @@
+node_modules
+bower_components
+launch.json
+npm-debug.log

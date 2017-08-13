@@ -1,0 +1,196 @@
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">SCHOOL LIB</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="aligncenter">
+					<button type="button" class="btn btn-primary" ng-click="showBooks = true">All Books</button>
+				</li>
+				<li class="aligncenter">
+					<button type="button" class="btn btn-primary" ng-click="showBooks = false">All Users</button>
+				</li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li class="aligncenter"><!-- Add Book modal -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">Add New Book</button>
+				</li>
+				<li class="aligncenter"><!-- Add User modal -->
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal2">Add New User</button>
+				</li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+<div class="col-md-12">
+
+	<div class="col-sm-5" ng-if="showBooks">
+		<div class="tbleBck">
+			<h3 class="text-center">All Book List</h3>
+			<table ng-table="tableBookParams" class="table table-hover" show-filter="true">
+				<tr ng-repeat="book in $data">
+					<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+						{{book.name}}</td>
+					<td title="'Auther'" filter="{ auther: 'text'}" sortable="'auther'">
+						{{book.auther}}</td>
+					<td title="'Availability'" filter="{ availability: 'text'}">
+						<!--<span ng-if="user.availability">Available</span>
+						<span ng-if="!user.availability">Not Available</span>-->
+						{{book.availability}}</td>
+					<td title="'Action'">
+						<span class="glyphicon glyphicon-trash required" aria-hidden="true" ng-click="remove_book(book)"></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="col-sm-5" ng-if="!showBooks">
+		<div class="tbleBck">
+			<h3 class="text-center">All User List</h3>
+			<table ng-table="tableUserParams" class="table table-hover" show-filter="true">
+				<tr ng-repeat="user in $data">
+					<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+						{{user.name}}</td>
+					<td title="'Email'" filter="{ email: 'text'}" sortable="'email'">
+						{{user.email}}</td>
+					<td title="'Contact'" filter="{ contact: 'text'}" sortable="'contact'">
+						{{user.contact}}</td>
+					<td title="'Action'">
+						<span class="glyphicon glyphicon-trash required" aria-hidden="true" ng-click="remove_user(user)"></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="col-sm-7">
+		<div class="tbleBck">
+			<div class="col-sm-12">
+				<md-checkbox ng-model="transaction.borrow" aria-label="Checkbox 1">
+					Return Book
+				</md-checkbox>
+			</div>
+			<div class="col-sm-12">
+				<md-autocomplete flex=""
+								 md-search-text="searchText"
+								 md-items="item in queryUserSearch(searchText)"
+								 md-item-text="item.name"
+								 md-selected-item="transaction3.name"
+								 md-selected-item-change="selectedItemChangeUser(item)"
+								 md-min-length="0"
+								 md-floating-label="User Name" >
+					<md-item-template>
+						<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name}}</span>
+					</md-item-template>
+					<md-not-found>
+						No User matching "{{searchText}}" were found.
+					</md-not-found>
+				</md-autocomplete>
+			</div>
+			<div class="col-sm-12" style="margin-top: -32px">
+				<md-autocomplete flex=""
+								 md-search-text="searchText2"
+								 md-items="item in queryBookSearch(searchText2)"
+								 md-item-text="item.name"
+								 md-selected-item="transaction2.name"
+								 md-selected-item-change="selectedItemChangeBook(item)"
+								 md-min-length="0"
+								 md-floating-label="Book Name" >
+					<md-item-template>
+						<span md-highlight-text="searchText2" md-highlight-flags="^i">{{item.name}}</span>
+					</md-item-template>
+					<md-not-found>
+						No Book matching "{{searchText2}}" were found.
+					</md-not-found>
+				</md-autocomplete>
+			</div>
+			<div class="col-sm-6" style="margin-top: -37px" ng-if="!transaction.borrow">
+				<div flex-gt-xs>
+					<h5>Book Issue Date</h5>
+					<md-datepicker ng-model="transaction.issueDate" md-placeholder="Issue date"></md-datepicker>
+				</div>
+			</div>
+			<div class="col-sm-6" style="margin-top: -37px" ng-if="!transaction.borrow">
+				<div flex-gt-xs>
+					<h5>Book Return Date</h5>
+					<md-datepicker ng-model="transaction.returnDate" md-min-date="transaction.issueDate" md-placeholder="Return date"></md-datepicker>
+				</div>
+			</div>
+			<button type="button" class="btn btn-primary col-sm-12" ng-click="add_transction()" style="top: 200px;;">
+				<span ng-if="!transaction.borrow">Issue Book</span>
+				<span ng-if="transaction.borrow">Return Book</span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<div class="footernav navbar-fixed-bottom">
+<p>powered & &#169; park public school</p>
+</div>
+
+<!-- Add Book Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add Book</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Book Name</label>
+					<input type="text" class="form-control"  ng-model="book.name" placeholder="Book Name">
+				</div>
+				<div class="form-group">
+					<label>Book Auther</label>
+					<input type="text" class="form-control"  ng-model="book.auther" placeholder="Book Auther">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" ng-click="add_book()">Add Book</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Add User Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal2">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add User</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>User Name</label>
+					<input type="text" class="form-control"  ng-model="user.name" placeholder="User Name">
+				</div>
+				<div class="form-group">
+					<label>User Email</label>
+					<input type="email" class="form-control"  ng-model="user.email" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label>User Contact</label>
+					<input type="text" class="form-control"  ng-model="user.contact" placeholder="Contact No.">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" ng-click="add_user()">Add User</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

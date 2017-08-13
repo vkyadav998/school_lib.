@@ -1,0 +1,56 @@
+<header></header>
+<h2 class="text-center bg-primary" style="padding: 15px;border-radius:12px;">{{user.name}}'s Zone</h2>
+
+<div class="col-sm-4 corder" ng-init="morder !==true" ng-if="morder !==true">
+    <form name="mylogin" novalidate>
+        <h3 class="bg-primary text-center">Order Here</h3>
+        <div class="form-group">
+            <label>Select Itom</label>
+            <select class="col-sm-12 form-control" name="qlf" ng-model="order.itom" id="edu" ng-options="x for x in itom" required></select>
+        </div>
+        <div class="form-group">
+            <label>Itom Type</label>
+            <input type="text" class="form-control"  ng-model="order.type">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <textarea type="text" class="form-control"  ng-model="order.address"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Pincode</label>
+            <input type="text" class="form-control"  ng-model="order.pin">
+        </div>
+        <div class="form-group" ng-class="{'has-error':( myform.date_delivered.$touched && myform.date_delivered.$invalid)||(myform.date_delivered.$invalid && submitreg)}">
+            <label>Select Date</label>
+            <datepicker date-format="MM-dd-yyyy" date-set="{{user.date | date:'medium'}}">
+                <input class="form-control angular-datepicker-input" ng-model="order.date" type="text" name="date_delivered" required>
+            </datepicker>
+            <p class="required" ng-show="( myform.date_delivered.$touched && myform.date_delivered.$invalid)||(myform.date_delivered.$invalid && submitreg) ">this field is required</p>
+        </div>
+        <a class="btn btn-success pull-right" ng-click="custOrder()" style="margin:10px;">Place Order</a>
+    </form>
+</div>
+
+<div class="col-sm-4" ng-init="morder !==true" ng-if="morder !==true">
+    <div class="list-group">
+        <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{"  "+user.name}}'s profile </a>
+        <a class="list-group-item">{{user._id}}</a>
+        <a class="list-group-item">{{user.email}}</a>
+        <a class="list-group-item">{{user.mobile}}</a>
+        <a class="list-group-item">{{user.password}}</a>
+        <a class="list-group-item">{{user.date}}</a>
+        <a class="list-group-item">{{user.subject+ " , " +user.type}}</a>
+    </div>
+</div>
+
+<div class="col-sm-4" ng-repeat="x in orders">
+    <div class="list-group">
+        <a href="#" class="list-group-item active"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Shopping</a>
+        <a class="list-group-item">{{x.uid}}</a>
+        <a class="list-group-item">{{x.type}}</a>
+        <a class="list-group-item">{{x.pin}}</a>
+        <a class="list-group-item">{{x.itom}}</a>
+        <a class="list-group-item">{{x.date}}</a>
+        <a class="list-group-item">{{x.address}}</a>
+    </div>
+</div>
