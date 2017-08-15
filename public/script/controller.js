@@ -1,4 +1,3 @@
-let _underscore = require("underscore")
 
 myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTableParams', '$timeout',
 	function($scope, $http, $window, ADD_SERVICE, NgTableParams, $timeout) {
@@ -24,7 +23,6 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 			console.log(err);
 		})
     };
-	$scope.getall_book();
 
 
 	// add single book
@@ -73,7 +71,7 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 			console.log(err);
 		});
 	};
-	$scope.getall_user();
+	
 
 	// add single user
 	$scope.add_user = function (){
@@ -109,22 +107,34 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 		
 		
 	$scope.issueBook = function () {
-		if($scope.transaction.userID && $scope.transaction.bookID && $scope.transaction.availability){
-				var reqdata = $scope.transaction;
+		if($scope.transaction.userID && $scope.transaction.bookID){
 
-				var reqheader = {'Content-Type' : "application/json"};
+			if(!$scope.transaction.availability){
+				alert("Book is currently unavailable");
+				return;
+			}
 
-				$http.post('transaction/issueBook',reqdata,reqheader)
-				.then(function(response){
-					console.log(response);
-				}).then(function () {
-					$scope.getall_book();
-				});
-			
+			var reqdata = $scope.transaction;
+			var reqheader = {'Content-Type' : "application/json"};
+
+			$http.post('transaction/issueBook',reqdata,reqheader)
+			.then(function(response){
+				$scope.init();
+			}).then(function () {
+				$scope.getall_book();
+			});
 		}else {
 			alert("please select user & book");
 		}
 	}
+
+
+	//init function
+	$scope.init = function(){
+		$scope.getall_book();
+		$scope.getall_user();
+	};
+	$scope.init();
 
 
 	/** auto complete for User **/

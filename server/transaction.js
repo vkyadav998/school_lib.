@@ -20,24 +20,24 @@ router.get('/getall_transaction', function(req, res)  {
 });
 
 router.post('/issueBook', function(req, res){
-    var transaction =req.body;
-    console.log("request = " + req.body);
-    var transaction = new TRANSACTION(transaction);
+    let transaction =req.body;
+    let transct = new TRANSACTION(transaction);
 
-    transaction.save(function(err, data) {
-        if (err) return console.error(err);
-        res.json(transaction);
+    let mpromise = transct.save().exec();
+    mpromise.then(function (data) {
+        res.json(data);
+    }).catch(function (err) {
+        console.error(err);
     });
 });
 
 router.post('/add_transaction', function(req, res){
-    var transaction =req.body;
-    console.log("request = " + req.body);
-    var transaction = new TRANSACTION(transaction);
+    let transaction =req.body;
+    let transct = new TRANSACTION(transaction);
 
-    transaction.save(function(err, data) {
+    transct.save(function(err, data) {
         if (err) return console.error(err);
-        res.json(transaction);
+        res.json(data);
     });
 });
 
