@@ -89,9 +89,18 @@
 								 md-selected-item="transaction3.name"
 								 md-selected-item-change="selectedItemChangeUser(item)"
 								 md-min-length="0"
-								 md-floating-label="User Name" >
+								 md-floating-label="User Name"
+								 md-menu-class="autocomplete-custom-template" >
 					<md-item-template>
-						<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name}}</span>
+						<!-- <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name}}</span> -->
+						<span class="item-title">
+							<strong style="font-size:13px;"> {{item.name}} </strong>
+						</span>
+						<span class="item-metadata">
+							<span>
+								<strong style="font-size: 11px;">{{"borrow book"}}</strong>
+							</span>
+						</span>
 					</md-item-template>
 					<md-not-found>
 						No User matching "{{searchText}}" were found.
@@ -127,9 +136,11 @@
 					<md-datepicker ng-model="transaction.returnDate" md-min-date="transaction.issueDate" md-placeholder="Return date"></md-datepicker>
 				</div>
 			</div>
-			<button type="button" class="btn btn-primary col-sm-12" ng-click="add_transction()" style="top: 200px;;">
-				<span ng-if="!transaction.borrow">Issue Book</span>
-				<span ng-if="transaction.borrow">Return Book</span>
+			<button type="button" ng-if="!transaction.borrow" class="btn btn-primary col-sm-12" ng-click="issueBook()" style="top: 200px;;">
+				<span >Issue Book</span>
+			</button>
+			<button type="button" ng-if="transaction.borrow" class="btn btn-primary col-sm-12" ng-click="returnBook()" style="top: 200px;;">
+				<span >Return Book</span>
 			</button>
 		</div>
 	</div>

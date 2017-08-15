@@ -32,3 +32,26 @@
     font-size: 12px;
     background-color: rgba(63,81,181,0.53);
 }
+
+.autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  white-space: normal;
+}
+.autocomplete-custom-template li:last-child {
+  border-bottom-width: 0;
+}
+.autocomplete-custom-template .item-title,
+.autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 17px;
+}
+.autocomplete-custom-template .item-title md-icon {
+  height: 17px;
+  width: 17px;
+}
+.md-autocomplete-suggestions-container li.selected {
+    background: #fff58e !important;
+}

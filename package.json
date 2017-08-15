@@ -13,7 +13,8 @@
     "file-system": "^2.2.1",
     "mongoose": "^4.10.0",
     "mongoose-autoincrement": "^1.0.0",
-    "multer": "^1.2.0"
+    "multer": "^1.2.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {},
   "description": ""

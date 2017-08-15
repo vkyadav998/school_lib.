@@ -1,19 +1,4 @@
-var myApp = angular.module('myApp',['ngRoute','ngTable','ngMaterial']);
-
-myApp.config(['$routeProvider',function($routeProvider) {
-	
-	$routeProvider.when('/home', {
-		templateUrl : 'content/home.html',
-		controller : 'homeCtrl'
-	})
-	.when('/menu', {
-		templateUrl : 'content/menu.html',
-		controller : 'menuCtrl'
-	})
-	.otherwise({
-		redirectTo : '/home'
-	});
-}]);
+let _underscore = require("underscore")
 
 myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTableParams', '$timeout',
 	function($scope, $http, $window, ADD_SERVICE, NgTableParams, $timeout) {
@@ -38,10 +23,8 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 		}).catch(function (err) {
 			console.log(err);
 		})
-
     };
 	$scope.getall_book();
-
 
 
 	// add single book
@@ -52,7 +35,7 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 			var reqheader = {'Content-Type' : "application/json"};
 
 			$http.post('book/add_book',reqdata,reqheader)
-				.success(function(response){
+				.then(function(response){
 					console.log(response);
 					$('#modal').modal('hide');
 					$scope.book={};
@@ -71,7 +54,7 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 		var reqheader = {'Content-Type' : "application/json"};
 
 		$http.post('book/remove_book',reqdata,reqheader)
-			.success(function(response){
+			.then(function(response){
 				alert("book removed.");
 				$scope.getall_book();
 			});
@@ -125,33 +108,19 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 	};
 		
 		
-	$scope.add_transction = function () {
-
-		var tepBook;
-		$scope.allBooks.forEach(function (item) {
-			if(item._id == $scope.transaction.bookID){
-				tepBook = item;
-			}
-		});
-
-		if($scope.transaction.userID && $scope.transaction.bookID){
-			if(tepBook.availability){
+	$scope.issueBook = function () {
+		if($scope.transaction.userID && $scope.transaction.bookID && $scope.transaction.availability){
 				var reqdata = $scope.transaction;
 
 				var reqheader = {'Content-Type' : "application/json"};
 
-				$http.post('transaction/add_transaction',reqdata,reqheader)
+				$http.post('transaction/issueBook',reqdata,reqheader)
 				.then(function(response){
 					console.log(response);
-
-					reqdata.availability = (reqdata.borrow)?true:false;
-					return $http.post('book/update_book',reqdata,reqheader);
 				}).then(function () {
 					$scope.getall_book();
 				});
-			}else {
-				alert("Book is currently unavailable");
-			}
+			
 		}else {
 			alert("please select user & book");
 		}
@@ -217,6 +186,7 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 	$scope.selectedItemChangeBook = function(item){
 		if(item) {
 			$scope.transaction.bookID = item._id;
+			$scope.transaction.availability = item.availability;
 		}
 	};
 

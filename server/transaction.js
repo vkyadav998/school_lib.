@@ -19,6 +19,17 @@ router.get('/getall_transaction', function(req, res)  {
     });
 });
 
+router.post('/issueBook', function(req, res){
+    var transaction =req.body;
+    console.log("request = " + req.body);
+    var transaction = new TRANSACTION(transaction);
+
+    transaction.save(function(err, data) {
+        if (err) return console.error(err);
+        res.json(transaction);
+    });
+});
+
 router.post('/add_transaction', function(req, res){
     var transaction =req.body;
     console.log("request = " + req.body);
