@@ -33,13 +33,10 @@ router.post('/issueBook', function(req, res){
     });
 });
 
-router.post('/add_transaction', function(req, res){
-    let transaction =req.body;
-    let transct = new TRANSACTION(transaction);
-
-    transct.save(function(err, data) {
-        if (err) return console.error(err);
-        res.json(data);
+router.post('/returnBook', function(req, res){
+    let reqData =req.body;
+    BOOK.findOneAndUpdate({"_id":reqData.bookID}, {$set:{availability:true}},function(err, docs){
+        res.json(docs);
     });
 });
 

@@ -120,8 +120,30 @@ myApp.controller('homeCtrl', ['$scope', '$http', '$window', 'ADD_SERVICE', 'NgTa
 			$http.post('transaction/issueBook',reqdata,reqheader)
 			.then(function(response){
 				$scope.init();
-			}).then(function () {
-				$scope.getall_book();
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}else {
+			alert("please select user & book");
+		}
+	}
+
+	$scope.returnBook = function () {
+		if($scope.transaction.userID && $scope.transaction.bookID){
+			
+			if($scope.transaction.availability){
+				alert("Book is already available");
+				return;
+			}
+
+			var reqdata = $scope.transaction;
+			var reqheader = {'Content-Type' : "application/json"};
+
+			$http.post('transaction/returnBook',reqdata,reqheader)
+			.then(function(response){
+				$scope.init();
+			}).catch(function (err) {
+				console.log(err);
 			});
 		}else {
 			alert("please select user & book");
