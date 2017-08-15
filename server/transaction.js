@@ -20,12 +20,14 @@ router.get('/getall_transaction', function(req, res)  {
 });
 
 router.post('/issueBook', function(req, res){
-    let transaction =req.body;
-    let transct = new TRANSACTION(transaction);
+    let reqData =req.body;
+    let transction = new TRANSACTION(reqData);
 
-    let mpromise = transct.save().exec();
+    let mpromise = transction.save();
     mpromise.then(function (data) {
-        res.json(data);
+        BOOK.findOneAndUpdate({"_id":reqData.bookID}, {$set:{availability:false}},function(err, docs){
+            res.json(docs);
+        });
     }).catch(function (err) {
         console.error(err);
     });
